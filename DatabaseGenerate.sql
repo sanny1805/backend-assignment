@@ -1,0 +1,36 @@
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'OT_Assessment_DB')
+BEGIN
+    ALTER DATABASE OT_Assessment_DB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE OT_Assessment_DB;
+END
+GO
+
+CREATE DATABASE OT_Assessment_DB;
+GO
+
+USE OT_Assessment_DB;
+GO
+
+CREATE TABLE Players (
+    AccountId UNIQUEIDENTIFIER PRIMARY KEY,
+    Username NVARCHAR(100) NOT NULL
+);
+GO
+
+CREATE TABLE CasinoWagers (
+    WagerId UNIQUEIDENTIFIER PRIMARY KEY,
+    Theme NVARCHAR(255),
+    Provider NVARCHAR(255),
+    GameName NVARCHAR(255),
+    TransactionId UNIQUEIDENTIFIER NOT NULL,
+    BrandId UNIQUEIDENTIFIER NOT NULL,
+    AccountId UNIQUEIDENTIFIER NOT NULL,
+    Amount DECIMAL(18, 2) NOT NULL,
+    CreatedDateTime DATETIME NOT NULL,
+    NumberOfBets INT NOT NULL,
+    CountryCode NVARCHAR(10),
+    SessionData NVARCHAR(MAX),
+    Duration BIGINT NOT NULL,
+    FOREIGN KEY (AccountId) REFERENCES Players(AccountId)
+);
+GO
